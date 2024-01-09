@@ -23,6 +23,6 @@ jobs:
       # curl to perform a get request on helioviewer, -i option to return http header
       # head -n 1 will return only the HTTP status header (i.e. HTTP/1.1 200 OK)
       # If grep does not see "200" in the output, it will return a non-zero exit code.
-      - run: |
+        run: |
           curl -i -s -X GET https://helioviewer.org | head -n 1 | grep 200
           
