@@ -1,0 +1,28 @@
+# This is a basic workflow to help you get started with Actions
+
+name: HV Down Detector
+
+# Controls when the workflow will run
+on:
+  schedule:
+    # Run every 5 minutes
+    - cron:  '*/5 * * * *'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  check-on-helioviewer:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Ping Helioviewer
+      # curl to perform a get request on helioviewer, -i option to return http header
+      # head -n 1 will return only the HTTP status header (i.e. HTTP/1.1 200 OK)
+      # If grep does not see "200" in the output, it will return a non-zero exit code.
+      - run: |
+          curl -i -s -X GET https://helioviewer.org | head -n 1 | grep 200
+          
