@@ -5,8 +5,8 @@ name: HV Down Detector
 # Controls when the workflow will run
 on:
   schedule:
-    # Run every 15 minutes
-    - cron:  '*/15 * * * *'
+    # Run every 5 minutes
+    - cron:  '*/5 * * * *'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -24,7 +24,7 @@ jobs:
       # head -n 1 will return only the HTTP status header (i.e. HTTP/1.1 200 OK)
       # If grep does not see "200" in the output, it will return a non-zero exit code.
         run: |
-          curl -i -s -X GET https://helioviewer.org | head -n 1 | grep 200
+          curl -i -s -X GET https://helioviewer.org/fail | head -n 1 | grep 200
       - name: Report failure
         if: ${{ failure() }}
         run: |
@@ -34,6 +34,5 @@ jobs:
           -H "Authorization: Bearer ${{secrets.API_TOKEN}}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/repos/Helioviewer-Project/helioviewer.org/issues \
-          -d '{"title":"Helioviewer is Inaccessible","body":"This issue was created automatically via Helioviewer's automated Down Detector: https://github.com/dgarciabriseno/hv-down-detector/actions","labels":["priority: high"]}'
-          
+          -d '{"title":"Test issue","body":"This issue was created via github actions to test automated issue creation","labels":["priority: high"]}'
           
