@@ -25,4 +25,15 @@ jobs:
       # If grep does not see "200" in the output, it will return a non-zero exit code.
         run: |
           curl -i -s -X GET https://helioviewer.org | head -n 1 | grep 200
+      - name: Report failure
+        if: ${{ failure() }}
+        run: |
+          curl -L \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{secrets.API_TOKEN}}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/Helioviewer-Project/helioviewer.org/issues \
+          -d '{"title":"Helioviewer is Inaccessible","body":"This issue was created automatically via Helioviewer's automated Down Detector: https://github.com/dgarciabriseno/hv-down-detector/actions","labels":["priority: high"]}'
+          
           
