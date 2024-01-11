@@ -25,12 +25,12 @@ jobs:
       - name: Report failure
         if: ${{ failure() }}
         run: |
-          curl -L \
+          result=`curl -L \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{secrets.API_TOKEN}}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          -o- https://api.github.com/repos/Helioviewer-Project/helioviewer.org/issues | grep "Test issue"
-          if [ $? -eq 1 ]; then;
+          -o- https://api.github.com/repos/Helioviewer-Project/helioviewer.org/issues | grep "Test issue"`
+          if [ $result -eq 1 ]; then;
               curl -L \
               -X POST \
               -H "Accept: application/vnd.github+json" \
